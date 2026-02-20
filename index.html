@@ -311,6 +311,67 @@ body::before {
   border-color: var(--text);
 }
 
+/* YEAR SLIDER */
+.year-slider-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.year-slider-val {
+  font-family: var(--mono);
+  font-size: 32px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.year-slider-sub {
+  font-family: var(--body-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+.year-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--border-mid);
+  outline: none;
+  cursor: pointer;
+  border-radius: 0;
+  margin-top: 4px;
+}
+
+.year-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--text);
+  border-radius: 0;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.year-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--text);
+  border-radius: 0;
+  cursor: pointer;
+  border: none;
+  transition: background var(--transition);
+}
+
+.year-slider::-webkit-slider-thumb:hover,
+.year-slider:active::-webkit-slider-thumb { background: var(--red); }
+.year-slider::-moz-range-thumb:hover,
+.year-slider:active::-moz-range-thumb { background: var(--red); }
+
 /* TOGGLE */
 .toggle-row {
   display: flex;
@@ -571,6 +632,40 @@ body::before {
   cursor: not-allowed;
 }
 
+/* CHRONO TOGGLE */
+.chrono-toggle {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 680px;
+}
+
+.chrono-toggle.visible { display: flex; }
+
+.chrono-toggle-btn {
+  padding: 7px 16px;
+  font-family: var(--body-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.chrono-toggle-btn:hover {
+  color: var(--text-dim);
+  border-color: var(--border-mid);
+}
+
+.chrono-toggle-btn.open {
+  color: var(--text-dim);
+  border-color: var(--border-mid);
+}
+
 /* TIMER ZONE */
 .timer-zone {
   display: none;
@@ -746,6 +841,79 @@ body::before {
   color: var(--text);
   font-size: 10px;
   font-weight: 400;
+}
+
+/* SEED ZONE */
+.seed-zone {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 680px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-top: -16px;
+}
+
+.seed-label {
+  font-family: var(--body-mono);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.seed-input {
+  width: 90px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-mid);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 22px;
+  text-align: center;
+  outline: none;
+  padding: 2px 4px;
+  transition: border-color var(--transition);
+  -moz-appearance: textfield;
+}
+.seed-input::-webkit-outer-spin-button,
+.seed-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.seed-input:focus { border-bottom-color: var(--red); }
+.seed-input::placeholder { color: var(--text-muted); font-size: 16px; }
+
+.seed-go-btn {
+  padding: 6px 14px;
+  font-family: var(--body-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: transparent;
+  border: 1px solid var(--border-mid);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.seed-go-btn:hover {
+  color: var(--text);
+  border-color: var(--text-dim);
+}
+
+.seed-current {
+  margin-left: auto;
+  font-family: var(--body-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.seed-current span {
+  color: var(--text-dim);
 }
 
 /* ═══════════════════════════════════════════════
@@ -1075,6 +1243,19 @@ body::before {
       <div class="divider"></div>
 
       <div>
+        <div class="filter-section-title">À partir de</div>
+        <div class="year-slider-wrap">
+          <div>
+            <div class="year-slider-val" id="year-slider-val">—</div>
+            <div class="year-slider-sub" id="year-slider-sub">toutes les années</div>
+          </div>
+          <input type="range" class="year-slider" id="year-slider" step="1">
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div>
         <div class="filter-section-title">Ressources</div>
         <div class="toggle-row">
           <div class="toggle-label">Ressources corrigées uniquement</div>
@@ -1123,6 +1304,20 @@ body::before {
           <button class="nav-arrow" id="next-btn" title="Sujet suivant (Flèche Droite)" disabled>►</button>
         </div>
 
+      </div>
+
+      <!-- SEED ZONE -->
+      <div class="seed-zone">
+        <div class="seed-label">Seed #</div>
+        <input class="seed-input" type="number" id="seed-input" placeholder="0" min="0">
+        <button class="seed-go-btn" id="seed-go-btn">→ GO</button>
+        <div class="seed-current" id="seed-current" style="display:none">
+          seed actuel : <span id="seed-current-val">—</span>
+        </div>
+      </div>
+
+      <div class="chrono-toggle" id="chrono-toggle">
+        <button class="chrono-toggle-btn" id="chrono-toggle-btn">⏱ Chrono</button>
       </div>
 
       <div class="timer-zone" id="timer-zone">
@@ -1304,6 +1499,8 @@ const state = {
   resourcesOnly:  false,
   filteredSujets: [],
   currentSujet:   null,
+  yearMin:        0,
+  yearMax:        9999,
   
   // Historique
   history:        [],
@@ -1334,6 +1531,8 @@ function getFiltered() {
     }
 
     if (state.resourcesOnly && !s.rapportLink && !s.copieLink) return false;
+
+    if (s.year && (s.year < state.yearMin || s.year > state.yearMax)) return false;
     
     return true;
   });
@@ -1351,6 +1550,7 @@ function getTypeCount(type) {
       if (!state.activeSchools.has(s.school)) return false;
     }
     if (state.resourcesOnly && !s.rapportLink && !s.copieLink) return false;
+    if (s.year && (s.year < state.yearMin || s.year > state.yearMax)) return false;
     return true;
   }).length;
 }
@@ -1393,7 +1593,22 @@ function triggerRandomDraw() {
   animateSubject(chosen, false); // false = pas instantané = animation glitch
 }
 
-// Naviguer dans l'historique (SANS animation)
+// Déclencher un tirage par seed (AVEC animation)
+function triggerSeedDraw(seedNum) {
+  if (state.animating) return;
+  const index = ((seedNum % sujets.length) + sujets.length) % sujets.length;
+  const chosen = sujets[index];
+
+  if (state.historyIndex < state.history.length - 1) {
+    state.history = state.history.slice(0, state.historyIndex + 1);
+  }
+  state.history.push(chosen);
+  state.historyIndex++;
+
+  animateSubject(chosen, false);
+}
+
+
 function goPrev() {
   if (state.animating || state.historyIndex <= 0) return;
   state.historyIndex--;
@@ -1425,6 +1640,8 @@ function animateSubject(chosen, isInstant = false) {
 
   // Nettoyer la zone inférieure
   clearTimer();
+  document.getElementById('chrono-toggle').classList.remove('visible');
+  document.getElementById('chrono-toggle-btn').classList.remove('open');
   document.getElementById('timer-zone').classList.remove('visible');
   document.getElementById('resources-zone').classList.remove('visible');
   document.getElementById('result-tags').innerHTML = '';
@@ -1478,12 +1695,20 @@ function finalizeDisplay(chosen) {
     tagsEl.innerHTML = chosen.tags.map(t => `<span class="result-tag fade-in">${t}</span>`).join('');
   }
 
-  document.getElementById('timer-zone').classList.add('visible');
+  document.getElementById('chrono-toggle').classList.add('visible');
   document.getElementById('countdown').textContent = '—';
   document.getElementById('countdown-bar').style.width = '100%';
 
   document.getElementById('prev-btn').disabled = state.historyIndex <= 0;
   document.getElementById('next-btn').disabled = state.historyIndex >= state.history.length - 1;
+
+  // Afficher le seed du sujet courant
+  const seedIndex = sujets.indexOf(chosen);
+  if (seedIndex !== -1) {
+    document.getElementById('seed-current').style.display = '';
+    document.getElementById('seed-current-val').textContent = seedIndex;
+    document.getElementById('seed-input').value = '';
+  }
 }
 
 /* ─────────────────────────────────────────────
@@ -1810,6 +2035,37 @@ function scaleStyle() {
 ───────────────────────────────────────────── */
 function init() {
   document.getElementById('nav-total').textContent = sujets.length + ' sujets';
+
+  // ── YEAR SLIDER ──
+  const years = sujets.map(s => s.year).filter(y => y && !isNaN(y));
+  const absMin = Math.min(...years);
+  const absMax = Math.max(...years);
+  state.yearMin = absMin;
+  state.yearMax = absMax;
+
+  const slider = document.getElementById('year-slider');
+  slider.min = absMin;
+  slider.max = absMax;
+  slider.value = absMin;
+
+  function updateSliderUI() {
+    const val = parseInt(slider.value);
+    const pct = ((val - absMin) / (absMax - absMin)) * 100;
+    slider.style.background = `linear-gradient(to right, var(--red) ${pct}%, var(--border-mid) ${pct}%)`;
+    document.getElementById('year-slider-val').textContent = val;
+    document.getElementById('year-slider-sub').textContent =
+      val === absMin ? 'toutes les années' : `→ ${absMax}`;
+  }
+
+  slider.addEventListener('input', () => {
+    state.yearMin = parseInt(slider.value);
+    updateSliderUI();
+    updateFilters();
+  });
+
+  updateSliderUI();
+  // ─────────────────
+
   updateFilters();
 
   document.querySelectorAll('.nav-tab').forEach(btn => {
@@ -1878,6 +2134,36 @@ function init() {
     document.getElementById('countdown').textContent = '00:00';
     document.getElementById('countdown-bar').style.width = '0%';
     showResources();
+  });
+
+  // Chrono toggle
+  document.getElementById('chrono-toggle-btn').addEventListener('click', () => {
+    const btn = document.getElementById('chrono-toggle-btn');
+    const zone = document.getElementById('timer-zone');
+    const isOpen = zone.classList.contains('visible');
+    if (isOpen) {
+      zone.classList.remove('visible');
+      btn.classList.remove('open');
+      btn.textContent = '⏱ Chrono';
+    } else {
+      zone.classList.add('visible');
+      btn.classList.add('open');
+      btn.textContent = '⏱ Fermer';
+    }
+  });
+
+  // Seed
+  document.getElementById('seed-go-btn').addEventListener('click', () => {
+    const val = document.getElementById('seed-input').value;
+    if (val === '') return;
+    triggerSeedDraw(parseInt(val, 10));
+  });
+
+  document.getElementById('seed-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const val = e.target.value;
+      if (val !== '') triggerSeedDraw(parseInt(val, 10));
+    }
   });
 
   // Raccourcis clavier (Espace, Flèche Gauche, Flèche Droite)
